@@ -98,6 +98,6 @@ All scripts appear as ScriptCards in the Paracore gallery.
 ## 📺 Demo Video
 
 Watch the 30-second promo on YouTube:  
-[Paracore Promo — Automate Revit with Raw C# Scripts](YOUR_YOUTUBE_VIDEO_LINK_HERE)
+[Paracore Promo — Automate Revit with Raw C# Scripts]https://youtu.be/Q-PtjA_aSe4
 
 ---

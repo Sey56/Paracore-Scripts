@@ -65,7 +65,6 @@ All scripts appear as ScriptCards in the Paracore gallery.
 - **Create_Wall.cs** → Build a wall with parameters for level, length, and height.  
 - **DeleteAllWalls.cs** → Remove all walls in the current project.  
 - **ListWallTypes.cs / ListWallSweepTypes.cs / ListWallSweepProfiles.cs** → Enumerate wall types and profiles.  
-- **Modify_Wall_Parameters.cs** → Adjust wall properties dynamically.  
 - **SelectAndZoom.cs** → Select elements and zoom the view.  
 - **Wall_Geometry_Editor.cs** → Edit wall geometry interactively.
 

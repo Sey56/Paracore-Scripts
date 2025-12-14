@@ -1,4 +1,7 @@
 using Autodesk.Revit.DB;
+/*
+Author: Paracore
+*/
 
 // CoreScript (C# + RevitAPI) top level scripting environment.
 

@@ -6,7 +6,7 @@ using System.Linq;
 /*
 DocumentType: Project
 Categories: Architectural, Structural
-Author: Paracore
+Author: Paracore Team
 Dependencies: RevitAPI 2025, CoreScript.Engine, RServer.Addin
 
 Description:
@@ -19,19 +19,19 @@ UsageExamples:
 - "Add vertical sweep to selected walls"
 */
 
-// [Parameter(Options: "AddSweep, AddReveal")]
+// [ScriptParameter(Options: "AddSweep, AddReveal")]
 string mode = "AddSweep";
 
-// [Parameter]
+// [ScriptParameter]
 bool vertical = false; // false = horizontal, true = vertical
 
-// [Parameter]
+// [ScriptParameter]
 double offsetMeters = 1.0;
 
-// [Parameter]
+// [ScriptParameter]
 string typeName = ""; // Optional: specific WallSweepType name
 
-// [Parameter]
+// [ScriptParameter]
 bool useSelection = true; // Operate on selected walls only
 
 // Collect Walls
@@ -40,7 +40,7 @@ bool canProceed = true;
 
 if (useSelection)
 {
-    var selection = UiDoc.Selection.GetElementIds();
+    var selection = UIDoc.Selection.GetElementIds();
     foreach (var id in selection)
     {
         if (Doc.GetElement(id) is Wall w) walls.Add(w);
@@ -108,7 +108,7 @@ if (canProceed && sweepType != null)
                 // Create WallSweepInfo
                 WallSweepInfo sweepInfo = new WallSweepInfo();
                 sweepInfo.WallSide = WallSide.Exterior; // Default to exterior
-                sweepInfo.Distance = offsetMeters / 0.3048; // Convert meters to feet
+                sweepInfo.Distance = UnitUtils.ConvertToInternalUnits(offsetMeters, UnitTypeId.Meters);
                 sweepInfo.IsVertical = vertical;
                 
                 WallSweep.Create(wall, sweepType.Id, sweepInfo);

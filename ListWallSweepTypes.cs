@@ -4,7 +4,7 @@ using System.Linq;
 /*
 DocumentType: Project
 Categories: Architectural, Structural
-Author: Paracore 
+Author: Paracore Team
 Dependencies: RevitAPI 2025, CoreScript.Engine, RServer.Addin
 
 Description:

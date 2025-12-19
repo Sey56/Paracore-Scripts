@@ -3,7 +3,7 @@ using Autodesk.Revit.DB;
 /*
 DocumentType: Project
 Categories: Architectural, Structural, MEP
-Author: ai-generated
+Author: Paracore Team
 Dependencies: RevitAPI 2025, CoreScript.Engine, RServer.Addin
 
 Description:

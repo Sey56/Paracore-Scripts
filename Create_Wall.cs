@@ -1,11 +1,12 @@
 using Autodesk.Revit.DB;
+using System.Collections.Generic;
+using System.Linq;
 
 /*
 DocumentType: Project
 Categories: Architectural, Structural, MEP
-Author: Seyoum Hagos
-Dependencies: RevitAPI 2025, RScript.Engine, RServer.Addin
-
+Author: Paracore Team
+Dependencies: RevitAPI 2025, CoreScript.Engine, RServer.Addin
 
 Description:
 Creates a wall along the X-axis at a user-defined level with specified length and height.
@@ -16,40 +17,82 @@ UsageExamples:
 - "Create a wall of 8m length and 3m height on 'Level 1'"
 */
 
-// [Parameter]
-string levelName = "Level 1";
-// [Parameter]
-double wallLengthMeters = 6.0;
-// [Parameter]
-double wallHeightMeters = 3.0;
+// Initialize Parameters
+var p = new Params();
 
-// Other Top-Level Statements
-double lengthFt = UnitUtils.ConvertToInternalUnits(wallLengthMeters, UnitTypeId.Meters);
-double heightFt = UnitUtils.ConvertToInternalUnits(wallHeightMeters, UnitTypeId.Meters);
-XYZ pt1 = new XYZ(-lengthFt / 2, 0, 0);
-XYZ pt2 = new XYZ(lengthFt / 2, 0, 0);
+// 1. Setup the geometry
+double lengthFt = UnitUtils.ConvertToInternalUnits(p.wallLengthMeters, UnitTypeId.Meters);
+double heightFt = UnitUtils.ConvertToInternalUnits(p.wallHeightMeters, UnitTypeId.Meters);
+
+XYZ pt1 = p.alongXAxis ? new(-lengthFt / 2, 0, 0) : new(0, -lengthFt / 2, 0);
+XYZ pt2 = p.alongXAxis ? new(lengthFt / 2, 0, 0) : new(0, lengthFt / 2, 0);
 Line wallLine = Line.CreateBound(pt1, pt2);
 
+// 2. Select the elements from Revit
 Level? level = new FilteredElementCollector(Doc)
     .OfClass(typeof(Level))
     .Cast<Level>()
-    .FirstOrDefault(l => l.Name == levelName); 
+    .FirstOrDefault(l => l.Name == p.levelName); 
 
-if (level == null)
+WallType? wallType = new FilteredElementCollector(Doc)
+    .OfClass(typeof(WallType))
+    .Cast<WallType>()
+    .FirstOrDefault(w => w.Name == p.wallTypeName);
+
+if (wallType == null)
 {
-    Println($"❌ Level '{levelName}' not found.");
+    Println($"🚫 Wall type '{p.wallTypeName}' not found.");
     return;
 }
 
-Println($"Preparing to create wall of {wallLengthMeters}m × {wallHeightMeters}m on '{levelName}'...");
+if (level == null)
+{
+    Println($"🚫 Level '{p.levelName}' not found.");
+    return;
+}
 
-// Write operations inside a transaction.
-// The new "Intelligent Engine" will automatically detect the created wall
-// and add it to the working set.
+Println($"Preparing to create wall of {p.wallLengthMeters}m × {p.wallHeightMeters}m on '{p.levelName}'...");
+
+// 3. Create the wall inside a transaction
 Transact("Create Wall", () =>
 {
     Wall wall = Wall.Create(Doc, wallLine, level.Id, false);
+    wall.WallType = wallType;
     wall.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM)?.Set(heightFt);
+    
+    Println($"✔️ Wall created: {wall.Id}");
 });
 
-Println("✅ Wall created.");
+// --- Parameter Definitions (The "Pro" Pattern) ---
+
+class Params {
+    [RevitElements]
+    public string levelName = "Level 1";
+
+    public List<string> levelName_Options() {
+        return new FilteredElementCollector(Doc)
+            .OfClass(typeof(Level))
+            .Select(l => l.Name)
+            .ToList();
+    }
+
+    [RevitElements]
+    public string wallTypeName = "Generic - 200mm";
+
+    public List<string> wallTypeName_Options() {
+        return new FilteredElementCollector(Doc)
+            .OfClass(typeof(WallType))
+            .Select(w => w.Name)
+            .OrderBy(n => n)
+            .ToList();
+    }
+
+    [ScriptParameter(Min: 0.1, Max: 50, Step: 0.1)]
+    public double wallLengthMeters = 6.0;
+
+    [ScriptParameter(Min: 0.1, Max: 20, Step: 0.1)]
+    public double wallHeightMeters = 3.0;
+
+    [ScriptParameter(Description: "If true, the wall is created along the X-axis. If false, along the Y-axis.")]
+    public bool alongXAxis = true;
+}

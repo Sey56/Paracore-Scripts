@@ -6,7 +6,7 @@ using System.Linq;
 /*
 DocumentType: Project
 Categories: Architectural, Structural
-Author: Paracore
+Author: Paracore Team
 Dependencies: RevitAPI 2025, CoreScript.Engine, RServer.Addin
 
 Description:
@@ -23,7 +23,7 @@ UsageExamples:
 - "Import walls from coordinates file"
 */
 
-// [Parameter(Options: "RoomBoundaries, Grid, Coordinates, Perimeter")]
+// [ScriptParameter(Options: "RoomBoundaries, Grid, Coordinates, Perimeter")]
 string creationMode = "RoomBoundaries";
 
 
@@ -42,29 +42,29 @@ double wallHeightMeters = 3.0;
 bool roomBounding = true;
 
 // Room Boundaries Mode Parameters
-// [Parameter(VisibleWhen: "creationMode == 'RoomBoundaries'")]
+// [ScriptParameter(VisibleWhen: "creationMode == 'RoomBoundaries'")]
 double wallOffsetMm = 0.0; // Offset from room boundary (positive = outward)
 
 // Grid Mode Parameters
-// [Parameter(VisibleWhen: "creationMode == 'Grid'")]
+// [ScriptParameter(VisibleWhen: "creationMode == 'Grid'")]
 double gridSpacingXMeters = 3.0;
-// [Parameter(VisibleWhen: "creationMode == 'Grid'")]
+// [ScriptParameter(VisibleWhen: "creationMode == 'Grid'")]
 double gridSpacingYMeters = 3.0;
-// [Parameter(VisibleWhen: "creationMode == 'Grid'")]
+// [ScriptParameter(VisibleWhen: "creationMode == 'Grid'")]
 int gridCountX = 5;
-// [Parameter(VisibleWhen: "creationMode == 'Grid'")]
+// [ScriptParameter(VisibleWhen: "creationMode == 'Grid'")]
 int gridCountY = 5;
-// [Parameter(VisibleWhen: "creationMode == 'Grid'")]
+// [ScriptParameter(VisibleWhen: "creationMode == 'Grid'")]
 double gridOriginXMeters = 0.0;
-// [Parameter(VisibleWhen: "creationMode == 'Grid'")]
+// [ScriptParameter(VisibleWhen: "creationMode == 'Grid'")]
 double gridOriginYMeters = 0.0;
 
 // Coordinates Mode Parameters
-// [Parameter(VisibleWhen: "creationMode == 'Coordinates'")]
+// [ScriptParameter(VisibleWhen: "creationMode == 'Coordinates'")]
 string csvFilePath = ""; // Path to CSV file with wall coordinates
 
 // Perimeter Mode Parameters
-// [Parameter(VisibleWhen: "creationMode == 'Perimeter'")]
+// [ScriptParameter(VisibleWhen: "creationMode == 'Perimeter'")]
 bool useModelLines = false; // Use existing model lines as perimeter
 
 // Get Level

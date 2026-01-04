@@ -1,7 +1,8 @@
 
-## Day 02 — Paracore UI and CoreScript (≈ 5 minutes)
+![Paras Codarch Logo](assets/ParasCodarch.png)
+## Day 02 — Paracore UI and CoreScript (≈ 3 minutes)
 
-🎬 **Watch the Day 02 walkthrough:** https://youtu.be/N2T5uACqfTI
+🎬 **Watch the Day 02 walkthrough:** https://youtu.be/VIDEO_ID
 
 This is a short, focused 3-minute walkthrough to quickly show the Paracore UI and create a simple CoreScript you can run yourself.
 

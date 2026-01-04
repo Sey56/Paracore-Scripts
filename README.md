@@ -1,102 +1,52 @@
-# Paracore Starter Scripts
+# Paracore Sample Scripts 🛠️
 
-Paracore is a developer-first automation platform for Autodesk Revit.  
-These starter scripts demonstrate how to automate Revit using raw C# Revit API code.
+Welcome to the official sample script library for **Paracore**. This collection is designed to help you understand how to automate Revit using C# and the Paracore Engine.
 
----
-
-## 🚀 Quick Start (TL;DR)
-
-1. Install **Paracore_Revit_Installer.exe** → Open Revit → Toggle **Paracore (ON)** in the Paracore tab.  
-2. Install **Paracore_Installer.msi** → Launch Paracore (auto-connects to Revit).  
-3. Clone this repo → Add the folder in Paracore’s **Local Folders** sidebar.  
-4. Open an empty Revit project → Run scripts from the gallery.  
-5. Experiment safely before applying to real projects.
+## 🚀 How to use this library
+1.  **Download/Clone** this folder.
+2.  Open **Paracore**.
+3.  Go to **Settings** > **Script Sources**.
+4.  Add the path to this folder as a "Local Folder". 🏎️
 
 ---
 
-## 📥 Installation
+## 🏗️ Script Types
+Paracore identifies two types of scripts within a script source:
 
-Before using the scripts, you need to install Paracore and its Revit add-in.  
-All installers are available on the [Releases page](../../releases).
+### 1. Single-File Scripts (`.cs`)
+Files located directly in the script source. These are standalone automations where the engine executes the logic sequentially.
 
-1. **Download from Releases**  
-   - Paracore_Installer.msi (v1.0.0)  
-   - RServer.Addin.exe (v1.0.0)  
-   - (Optional) corescript-0.0.1.vsix VSCode extension  
-     → For developers who want to execute code directly from VSCode to Revit.  
-     → Paracore itself does not require this extension.
+### 2. Multi-File Scripts (Folders)
+Folders located directly in the script source. These are treated as a single script entity, regardless of how many files are inside. 
 
-2. **Install the Revit Add-in**  
-   - Run `Paracore_Revit_Installer.exe`.  
-   - Open Revit.  
-   - In the **Paracore tab**, toggle **Paracore (ON)**.
-
-3. **Install the Paracore App**  
-   - Run `Paracore_Installer.msi`.  
-   - At the end of installation, check **Start Paracore**.  
-   - Paracore will launch and immediately connect to the active Revit session (make sure a document is open).
+*   **No Naming Enforcement**: You don't need to name the main file after the folder. You can name your entry point `Main.cs`, `Logic.cs`, or anything else.
+*   **Smart Detection**: The Paracore engine uses Roslyn to parse all files in the folder and automatically identifies the top-level execution entry point. 🧠
 
 ---
 
-## 📂 Adding Scripts to Paracore
+## ⚙️ Parameters & Metadata
+> [!IMPORTANT]
+> **Old Syntax Obsolete**: The legacy `// Parameter]` comment-based syntax has been removed. 
 
-1. In the Paracore UI, click the **hamburger menu** (top left).  
-2. Open the **Sidebar**.  
-3. In the **Local Folders** section, click the **+ button** (Add Folder).  
-4. In the file explorer dialog, select the `Paracore-Scripts` folder you cloned from GitHub.  
-5. The scripts will now appear in the **Script Gallery**.
+Please use the modern **Attribute-based** system for full UI integration:
 
----
+```csharp
+// Define your parameters in a class at the bottom
+class Params {
+    [ScriptParameter(Description: "My Wall Height")]
+    public double height = 3000;
 
-## 🧪 First Steps
-
-- Open an **empty Revit project** before experimenting with scripts.  
-- This ensures you can safely test automation without affecting a real project.  
-- Once comfortable, apply scripts to production projects.
-
----
-
-## 📜 Scripts Included
-
-All scripts appear as ScriptCards in the Paracore gallery.
-
-### 🔹 Single-file scripts
-- **Create_Wall.cs** → Build a wall with parameters for level, length, and height.  
-- **DeleteAllWalls.cs** → Remove all walls in the current project.  
-- **ListWallTypes.cs / ListWallSweepTypes.cs / ListWallSweepProfiles.cs** → Enumerate wall types and profiles.  
-- **SelectAndZoom.cs** → Select elements and zoom the view.  
-- **Wall_Geometry_Editor.cs** → Edit wall geometry interactively.
-
-### 🔹 Multi-file scripts (modularized)
-- **Create_Walls/** → Multi-file script for modular wall creation.  
-- **Create_Spiral_Wall/** → Multi-file script for spiral wall generation.  
-
-👉 Multi-file scripts are treated as single ScriptCards. The engine automatically resolves references, so you can run them just like single-file scripts.
-
-### 🔹 Generated scripts
-- **GeneratedScriptOne.cs / GeneratedScriptTwo.cs** → ai generated scripts.
+    [RevitElements(Description: "Target Categories")]
+    public string category = "Walls";
+}
+```
 
 ---
 
-## 📎 Downloads
+## ⚠️ Safety First!
+**NEVER run sample scripts on live production models until you have verified their logic.**
+*   Test all scripts on a copy of your model or the Revit Sample Project.
+*   Read the `Description` metadata at the top of each file to understand its impact.
+*   Check the console output for skipped elements or warnings. 🛡️
 
-- Installers and add-ins are available on the [Releases page](../../releases).  
-
----
-
-## 🎯 Why Paracore?
-
-- Write raw C# Revit API scripts in VSCode — battle-tested, robust.  
-- Execute instantly — scripts run directly in Revit.  
-- Generate complex automation with clarity and control.  
-- Modularize scripts easily — Paracore handles multi-file dependencies automatically.  
-
----
-
-## 📺 Demo Video
-
-Watch the 30-second promo on YouTube:  
-[Paracore Promo — Automate Revit with Raw C# Scripts]https://youtu.be/Q-PtjA_aSe4
-
----
+Happy Automating! 🏁⚙️🌟🏆🏁🚀

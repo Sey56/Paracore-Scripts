@@ -158,9 +158,11 @@ Println($"✅ Successfully created {createdCount} floor tiles in room '{selected
 // 4. Class Definitions (MUST BE LAST)
 public class Params
 {
+    #region 1. Room Selection
     /// <summary>Select a room to generate floor tiles in. Only named rooms with area are listed.</summary>
-    [RevitElements(TargetType = "Room", Group = "1. Room Selection"), Required]
+    [RevitElements(TargetType = "Room"), Required]
     public string SelectedRoom { get; set; }
+
 
     // Provides options for the SelectedRoom dropdown, filtering for named rooms with area
     public List<string> SelectedRoom_Options => new FilteredElementCollector(Doc)
@@ -172,12 +174,18 @@ public class Params
         .OrderBy(n => n)
         .ToList();
 
+    #endregion
+
+    #region 2. Tile Type
     /// <summary>The Floor Type to be used for the individual floor tiles.</summary>
-    [RevitElements(TargetType = "FloorType", Group = "2. Tile Type"), Required]
+    [RevitElements(TargetType = "FloorType"), Required]
     public string TileFloorType { get; set; }
 
+    #endregion
+
+    #region 3. Spacing
     /// <summary>Defines the nominal spacing between the centers of the generated tiles (in meters).</summary>
-    [ScriptParameter(Group = "3. Spacing"), Required]
+    [Required]
     public double TileSpacing { get; set; } = 1.0;
 
     // Defines the dynamic range for the Tile Spacing slider
@@ -234,13 +242,15 @@ public class Params
             return (minSpacingMeters, roundedMaxMeters, stepMeters);
         }
     }
+    #endregion
 
+    #region 4. Offset
     /// <summary>If checked, each tile's position will be randomly offset.</summary>
-    [ScriptParameter(Group = "4. Offset")]
+
     public bool RandomizeOffset { get; set; } = false;
 
+
     /// <summary>Maximum distance (in meters) a tile can be randomly offset from its grid position.</summary>
-    [ScriptParameter(Group = "4. Offset")]
     public double MaxOffset { get; set; } = 0.1;
 
     // Controls the visibility of the MaxOffset parameter based on RandomizeOffset
@@ -268,4 +278,6 @@ public class Params
             return (minOffsetMeters, roundedMaxMeters, stepMeters);
         }
     }
+
+    #endregion
 }

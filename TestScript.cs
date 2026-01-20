@@ -1,5 +1,20 @@
 using Autodesk.Revit.DB;
 
+/*
+DocumentType: Project
+Categories: Testing, Debugging
+Author: Paracore Team
+Dependencies: RevitAPI 2025, CoreScript.Engine, Paracore.Addin
+
+Description:
+Simple test script used for validating parameter parsing and error reporting.
+Deliberately includes a division-by-zero error for testing the unified stack trace viewer.
+
+UsageExamples:
+- "Run error reporting test"
+- "Test wall and door type parameters"
+*/
+
 Params p = new();
 int a = 5;
 int b = 0;
@@ -43,7 +58,7 @@ class Params
     /// <summary>
     /// The height of the wall in meters.
     /// </summary>
-    [Unit("m")]
+    [ScriptParameter(Suffix = "m")]
     [Range(1.0, 20.0, 0.1)]
     public double WallHeight { get; set; } = 3.0;
 
